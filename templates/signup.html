@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('https://media.istockphoto.com/id/1361198672/vector/violet-neon-laser-circles-technology-background.jpg?s=612x612&w=0&k=20&c=szR3XQNYW-L1eOHRPy_e2A-umePbCO2kgsOrkWduBSs=');
+            background-size: cover;
+        }
+
+        .container1 {
+            text-align: center;
+        }
+
+        form {
+            margin-top: -20px;
+            width: 465px;
+            height: 480px; /* Adjust the width as needed */
+            padding: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border: 1px solid #df9dc9;
+            border-radius: 7px;
+            background-color: rgb(203, 99, 245); /* Adjust the opacity as needed */
+            display: inline-block;
+        }
+
+        form label {
+            font-weight: bold;
+        }
+
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="password"] {
+            width: calc(100% - 20px); /* Adjust width and subtract padding */
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        form input[type="submit"] {
+            width: calc(100% - 20px); /* Adjust width and subtract padding */
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            background-color: rgb(129, 31, 168);;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: large;
+        }
+
+        form input[type="submit"]:hover {
+            background-color:white;
+            color:rgb(129, 31, 168);
+        }
+
+        form p {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        form p a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        form p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container1" id="container1">
+        <h2 style="color: #fff; font-weight: bolder;font-size: 30px;">Signup</h2>
+        <form action="/signup" method="post">
+            <label for="name" style="color: #fff;">Name:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+            <label for="email" style="color: #fff;">Email:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+            <label for="password" style="color: #fff;">Password:</label><br>
+            <input type="password" id="password" name="password" required><br><br>
+            <label for="retype_password" style="color: #fff;">Retype Password:</label><br>
+            <input type="password" id="retype_password" name="retype_password" required><br><br>
+            <input type="submit"  value="Signup">
+            <p style="color: #fff;">Already have an account? <a href="/" style="color: #fff;">Login here</a>.</p>
+        </form>
+    </div>
+</body>
+</html>

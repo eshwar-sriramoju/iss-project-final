@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('https://media.istockphoto.com/id/1361198672/vector/violet-neon-laser-circles-technology-background.jpg?s=612x612&w=0&k=20&c=szR3XQNYW-L1eOHRPy_e2A-umePbCO2kgsOrkWduBSs=');
+            background-size: cover;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        form {
+            margin-top: 60px;
+            width: 465px;
+            height: 480px; /* Adjust the width as needed */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            background-color: rgb(203, 99, 245); /* Adjust the opacity as needed */
+            display: flex;
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center children horizontally */
+            align-items: center; /* Center children vertically */
+        }
+
+        form label,
+        form input[type="email"],
+        form input[type="password"],
+        form input[type="submit"],
+        form p {
+            margin: 10px 0; /* Add margin to create spacing */
+        }
+
+        form label {
+            font-weight: bolder;
+        }
+
+        form input[type="email"],
+        form input[type="password"] {
+            width: calc(100% - 20px); /* Adjust width and subtract padding */
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        form input[type="submit"] {
+            width: calc(100% - 20px); /* Adjust width and subtract padding */
+            padding: 10px;
+            border: none;
+            font-size: large;
+            font-weight:bold;
+            border-radius: 3px;
+            background-color:rgb(115, 14, 155);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: white;
+            color:rgb(115, 14, 155);
+        }
+
+        form p {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        form p a {
+            color: white;
+            text-decoration: none;
+        }
+
+        form p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <h2 style="color: #fff;font-weight: bolder;font-size: 35px;">Login</h2>
+        <form action="/login"  method="post">
+            <label for="email" style="color: #fff;">Email:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+            <label for="password" style="color: #fff;">Password:</label><br>
+            <input type="password" id="password" name="password" required><br><br>
+            <input type="submit" value="Login">
+        </form>
+        <p style="color: #fff;">Don't have an account? <a href="/signup"style="color: #fff;" >Signup here</a>.</p>
+    </div>
+</body>
+</html>

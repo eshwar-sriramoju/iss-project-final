@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload and Gallery</title>
+    <style>
+        body{
+            background-image: url('https://img.freepik.com/free-photo/studio-background-concept-abstract-empty-light-gradient-purple-studio-room-background-product_1258-54682.jpg?size=338&ext=jpg&ga=GA1.1.735520172.1710892800&semt=ais');
+            background-size: cover;
+            color:white;
+        }
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 20px;
+        }
+        .center form {
+            margin-top: 10px;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-gap: 10px;
+            margin-top: 20px;
+        }
+        .gallery img {
+            width: 100%;
+            height: auto;
+        }
+
+        #drop-area {
+            border: 2px dashed #ccc;
+            border-radius: 20px;
+            width: 300px;
+            height: 200px;
+            margin: 50px auto;
+            text-align: center;
+            padding: 20px;
+        }
+        #drop-area.highlight {
+            border-color: purple;
+        }
+        button{
+            padding:5px;
+            font-size:large;
+            font-weight: bold;
+            color:purple;
+            border-color: blueviolet;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <h1>Upload Images</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="images" multiple accept="image/*">
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+
+    <br>
+
+    <div id="drop-area" ondragover="dragOver(event)" ondrop="drop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+        <h3>Drag & Drop Images Here</h3>
+    </div>
+    
+    <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data" style="display: none;">
+        <input type="file" id="fileElem" name="images" multiple accept="image/*">
+    </form>
+
+    <div class="center">
+        <h2>Image Gallery</h2>
+        <div class="gallery">
+            {% for image_url in image_urls %}
+            <img src="{{ image_url }}" alt="Image">
+            {% endfor %}
+        </div>
+
+        <a id="button" href="/createVideo">
+            <button>Create Video</button>
+        </a>
+    </div>
+
+    <script>
+        function dragOver(event) {
+            event.preventDefault();
+        }
+    
+        function dragEnter(event) {
+            event.preventDefault();
+            document.getElementById('drop-area').classList.add('highlight');
+        }
+    
+        function dragLeave(event) {
+            document.getElementById('drop-area').classList.remove('highlight');
+        }
+    
+        function drop(event) {
+            event.preventDefault();
+            document.getElementById('drop-area').classList.remove('highlight');
+    
+            var files = event.dataTransfer.files;
+            for (var i = 0; i < files.length; i++) {
+                var formData = new FormData();
+                formData.append('images', files[i]);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/upload', true);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        console.log('Image uploaded successfully');
+                    } else {
+                        console.error('Error uploading image');
+                    }
+                };
+                xhr.send(formData);
+            }
+        }
+    
+        document.getElementById('drop-area').addEventListener('click', function () {
+            document.getElementById('fileElem').click();
+        });
+    
+        document.getElementById('fileElem').addEventListener('change', function () {
+            document.getElementById('upload-form').submit();
+        });
+    </script>
+</body>
+</html>
