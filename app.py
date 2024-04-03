@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, session, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, session, url_for, send_from_directory, Response
 import mysql.connector
 import io
 import base64
 import hashlib
 from PIL import Image
+import psycopg2
 import os
 from moviepy.editor import *
 
@@ -12,27 +13,30 @@ app = Flask(__name__)
 app.secret_key = "your_secret_key"
 
 # Connect to the database
-conn = mysql.connector.connect(
-    host="localhost",
-    user="eshwarsriramoju",
-    password="Eshu@1503",
-)
+# conn = mysql.connector.connect(
+#     host="localhost",
+#     user="eshwarsriramoju",
+#     password="Eshu@1503",
+# )
+
+conn = psycopg2.connect(os.environ["DATABASE_URL"])
+
 c = conn.cursor()
 
-c.execute("CREATE DATABASE IF NOT EXISTS yourdatabase")
-conn.commit()
+# c.execute("CREATE DATABASE IF NOT EXISTS yourdatabase")
+# conn.commit()
 
-conn.database = 'yourdatabase'
+# conn.database = 'yourdatabase'
 
 # Create table if not exists
 c.execute('''CREATE TABLE IF NOT EXISTS images
-             (id INT AUTO_INCREMENT PRIMARY KEY, image MEDIUMBLOB, email VARCHAR(255))''')
+             (id SERIAL PRIMARY KEY, image BYTEA, email VARCHAR(255))''')
 
 c.execute('''CREATE TABLE IF NOT EXISTS users
-             (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), email VARCHAR(255), password VARCHAR(255))''')
+             (id SERIAL PRIMARY KEY, name VARCHAR(255), email VARCHAR(255), password VARCHAR(255))''')
 
-c.execute('''CREATE TABLE IF NOT EXISTS audio2
-                (id INT AUTO_INCREMENT PRIMARY KEY, audio_name VARCHAR(255), audio_blob LONGBLOB)''')
+c.execute('''CREATE TABLE IF NOT EXISTS audios
+                (id SERIAL PRIMARY KEY, audio_name VARCHAR(255), audio BYTEA)''')
 
 conn.commit()
 
@@ -203,7 +207,7 @@ def create_video():
         image_base64 = base64.b64encode(image_data).decode('utf-8')
         image_urls.append('data:image;base64,' + image_base64)
 
-    c.execute("SELECT audio_name FROM audio2")
+    c.execute("SELECT audio_name FROM audios")
     audio_data = [row[0] for row in c.fetchall()]
 
     if request.method == 'POST':
@@ -216,7 +220,7 @@ def create_video():
         audio_name = request.form.get('audio')
         # print(type(audio_name))
         # print(audio_name)
-        c.execute("SELECT audio_blob FROM audio2 WHERE audio_name = %s", (audio_name,))
+        c.execute("SELECT audio FROM audios WHERE audio_name = %s", (audio_name,))
         audio_blob = c.fetchone()[0]
         convert_audio_blob_to_mp3(audio_blob)
         
@@ -227,8 +231,8 @@ def create_video():
 
         c.execute("""DROP TABLE IF EXISTS selected_images""")
         c.execute("""CREATE TABLE IF NOT EXISTS selected_images (
-                        id INT AUTO_INCREMENT PRIMARY KEY,
-                        image MEDIUMBLOB
+                        id SERIAL PRIMARY KEY,
+                        image BYTEA
                     )""")
         conn.commit()
         # print(blob_keys)
@@ -290,9 +294,10 @@ def generate_video():
 
 @app.route('/get_audio/<audio_name>')
 def get_audio(audio_name):
-    c.execute("SELECT audio_blob FROM audio2 WHERE audio_name = %s", (audio_name,))
+    c.execute("SELECT audio FROM audios WHERE audio_name = %s", (audio_name,))
     audio_blob = c.fetchone()[0]
-    return audio_blob, 200, {'Content-Type': 'audio/mpeg'}
+    # return audio_blob, 200, {'Content-Type': 'audio/mpeg'}
+    return Response(audio_blob.tobytes(), status=200, mimetype='audio/mpeg')
 
 
 

@@ -1,0 +1,3 @@
+export DATABASE_URL="postgresql://eshwarsriramoju:ImZ3CGIdKIK0-LGWL-srhQ@hero-dog-9058.8nk.gcp-asia-southeast1.cockroachlabs.cloud:26257/yourdatabase?sslmode=verify-full"
+
+curl --create-dirs -o $HOME/.postgresql/root.crt 'https://cockroachlabs.cloud/clusters/c1f68662-ec43-445c-b1ad-198f5530a2f2/cert'
