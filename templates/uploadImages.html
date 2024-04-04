@@ -6,9 +6,11 @@
     <title>Upload and Gallery</title>
     <style>
         body{
-            background-image: url('https://img.freepik.com/free-photo/studio-background-concept-abstract-empty-light-gradient-purple-studio-room-background-product_1258-54682.jpg?size=338&ext=jpg&ga=GA1.1.735520172.1710892800&semt=ais');
-            background-size: cover;
+            background: linear-gradient(to bottom, #800080, #ff00ff);
             color:white;
+            opacity: 0; /* Initially set to 0 */
+            transition: opacity 1s ease-in-out; /* Transition effect */
+            background-size: 100% auto; /* Initially set to cover the full screen width */
         }
         .center {
             display: flex;
@@ -35,8 +37,9 @@
             border: 2px dashed #ccc;
             border-radius: 20px;
             width: 300px;
-            height: 200px;
+            height: 300px;
             margin: 50px auto;
+            margin-top: 60px;
             text-align: center;
             padding: 20px;
         }
@@ -48,14 +51,72 @@
             font-size:large;
             font-weight: bold;
             color:purple;
-            border-color: blueviolet;
+            border-color: rgb(203, 99, 245);
             border-radius: 15px;
+        }
+        button {
+            padding: 10px;
+            margin-top: 20px;
+            font-size: larger;
+            font-weight: bold;
+            color: purple;
+            border-color: rgb(203, 99, 245);
+            border-radius: 15px;
+            transition: background-color 0.3s, color 0.3s; /* Transition effect */
+        }
+        button:hover {
+            background-color:rgb(203, 99, 245);
+            color: white;
+        }
+        .logout-link {
+            position: absolute;
+            top: 5px;
+            right: 3px;
+            background-color: white;
+            color: purple;
+            text-decoration: none;
+            font-size: larger;
+            margin-left: 30px;
+            margin-right: 30px;
+            margin-top: 30px;
+            padding: 10px;
+            font-weight: bold;
+            border: 1px solid #1b0219;
+            border-radius: 15px;
+        }
+        .logout-link:hover {
+            background-color: rgb(203, 99, 245);
+            color: white;
         }
     </style>
 </head>
 <body>
+    <script>
+        // JavaScript to set opacity to 1 after the page has loaded
+        window.onload = function() {
+            document.body.style.opacity = 1;
+            adjustBackgroundGradientWidth();
+        };
+
+        // Adjust background gradient width based on screen width and page width
+        function adjustBackgroundGradientWidth() {
+            var pageWidth = document.body.scrollWidth;
+            var screenWidth = window.innerWidth;
+            if (pageWidth < screenWidth) {
+                document.body.style.backgroundSize = "100% auto";
+            } else {
+                document.body.style.backgroundSize = "auto";
+            }
+        }
+
+        // Adjust background gradient width when window is resized
+        window.onresize = function(event) {
+            adjustBackgroundGradientWidth();
+        };
+    </script>
+
     <div class="center">
-        <h1>Upload Images</h1>
+        <h1 style="margin-top: 150px;">Upload Images</h1>
         <form action="/upload" method="post" enctype="multipart/form-data">
             <input type="file" name="images" multiple accept="image/*">
             <button type="submit">Upload</button>
@@ -65,7 +126,7 @@
     <br>
 
     <div id="drop-area" ondragover="dragOver(event)" ondrop="drop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
-        <h3>Drag & Drop Images Here</h3>
+        <h2 style="margin-top:130px;font-size: larger;font-weight: bold;">Drag & Drop Images Here</h2>
     </div>
     
     <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data" style="display: none;">
@@ -73,7 +134,7 @@
     </form>
 
     <div class="center">
-        <h2>Image Gallery</h2>
+        <h1 style="margin-top: 80px;">Image Gallery</h1>
         <div class="gallery">
             {% for image_url in image_urls %}
             <img src="{{ image_url }}" alt="Image">
@@ -84,7 +145,7 @@
             <button>Create Video</button>
         </a>
     </div>
-
+    <a href="/logout" class="logout-link">Logout</a>
     <script>
         function dragOver(event) {
             event.preventDefault();
@@ -128,5 +189,6 @@
             document.getElementById('upload-form').submit();
         });
     </script>
+    
 </body>
 </html>

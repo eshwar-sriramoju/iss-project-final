@@ -5,110 +5,152 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Video</title>
     <style>
-        body{
-            background-image: url('https://img.freepik.com/free-photo/studio-background-concept-abstract-empty-light-gradient-purple-studio-room-background-product_1258-54682.jpg?size=338&ext=jpg&ga=GA1.1.735520172.1710892800&semt=ais');
-            background-size: cover;
-            color:white;
+        body {
+            background: linear-gradient(to bottom, #800080, #ff00ff);
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; /* Changed 'height' to 'min-height' */
             margin: 0;
         }
+    
         .form-container {
             background-color: rgba(255, 255, 255, 0.5);
             padding: 20px;
             border-radius: 10px;
             text-align: center; /* Center content width-wise */
+            opacity: 0; /* Initially hidden */
+            transition: opacity 1s ease; /* Fade-in transition */
         }
+    
         form {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+    
         .image-container {
             display: inline-block;
             margin: 10px;
             text-align: center;
         }
+    
         img {
             max-width: 200px;
             max-height: 200px;
         }
-        .butt{
+    
+        .butt {
             font-size: large;
             font-weight: bold;
             border-radius: 15px;
-            padding:5px;
+            padding: 5px;
             background-color: white;
-            color:purple;
+            color: purple;
             margin-top: 10px;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
         }
+    
+        .butt:hover {
+            background-color: purple;
+            color: white;
+        }
+    
         .audio-container {
             margin-top: 20px;
         }
+    
+        .logout-link {
+            position: absolute;
+            top: 5px;
+            right: 3px;
+            background-color: white;
+            color: purple;
+            text-decoration: none;
+            font-size: larger;
+            margin-left: 30px;
+            margin-right: 30px;
+            margin-top: 30px;
+            padding: 10px;
+            font-weight: bold;
+            border: 1px solid #1b0219;
+            border-radius: 15px;
+        }
+        .logout-link:hover {
+            background-color: rgb(203, 99, 245);
+            color: white;
+        }
     </style>
-</head>
+    </head>
 <body>
-    <div class="form-container">
-        <h1>Create Video</h1>
-        <form action="/createVideo" method="post">
-            {% for image_url in image_urls %}
-                <div class="image-container">
-                    <img src="{{ image_url }}" alt="Image">
-                    <br>
-                    <label for="duration_{{ loop.index }}">Duration (seconds):</label>
-                    <input type="number" id="duration_{{ loop.index }}" name="duration" min="0" max="10" value="0">
-                    <br>
-                    <input type="checkbox" name="selected_images" value="{{ image_url }}">
-                    <label for="select_{{ loop.index }}">Select</label>
-                    <!-- <input type="hidden" name="image_key_{{ loop.index }}" value="{{ loop.index }}"> -->
-                </div>
-            {% endfor %}
+<div class="form-container">
+    <h1>Create Video</h1>
+    <form action="/createVideo" method="post">
+        {% for image_url in image_urls %}
+        <div class="image-container">
+            <img src="{{ image_url }}" alt="Image">
             <br>
+            <label for="duration_{{ loop.index }}">Duration (seconds):</label>
+            <input type="number" id="duration_{{ loop.index }}" name="duration" min="0" max="10" value="0">
+            <br>
+            <input type="checkbox" name="selected_images" value="{{ image_url }}">
+            <label for="select_{{ loop.index }}">Select</label>
+            <!-- <input type="hidden" name="image_key_{{ loop.index }}" value="{{ loop.index }}"> -->
+        </div>
+        {% endfor %}
+        <br>
 
-            <div class="audio-container">
-                <label for="audio">Select Audio:</label>
-                <select id="audio" name="audio">
-                    {% for audio_data in audio_data %}
-                        <option value="{{ audio_data }}" name="option">{{ audio_data }}</option>
-                    {% endfor %}
-                </select>
-                <button type="button" class="butt" id="playAudio">Play</button>
-                <button type="button" class="butt" onclick="pauseButton()">Pause</button>
-                <button type="button" class="butt" onclick="resumeButton()">Resume</button>
-                <br>
-                <audio controls id="audioPlayer" style="display: none;">
-                    <source src="" type="audio/mpeg" id="audioSource">
-                    Your browser does not support the audio element.
-                </audio>
-            </div>
-            <br><br>
-            <input class="butt" type="submit" value="Generate Video">
-        </form>
-    </div>
+        <div class="audio-container">
+            <label for="audio">Select Audio:</label>
+            <select id="audio" name="audio">
+                {% for audio_data in audio_data %}
+                <option value="{{ audio_data }}" name="option">{{ audio_data }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" class="butt" id="playAudio">Play</button>
+            <button type="button" class="butt" onclick="pauseButton()">Pause</button>
+            <button type="button" class="butt" onclick="resumeButton()">Resume</button>
+            <br>
+            <audio controls id="audioPlayer" style="display: none;">
+                <source src="" type="audio/mpeg" id="audioSource">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        <br><br>
+        <input class="butt" type="submit" value="Generate Video">
+    </form>
 
-    <script>
-        const audioSelect = document.getElementById('audio');
-        const playButton = document.getElementById('playAudio');
-        const audioPlayer = document.getElementById('audioPlayer');
-        const audioSource = document.getElementById('audioSource');
+</div>
 
-        playButton.addEventListener('click', () => {
-            const audioName = audioSelect.value;
-            const audioUrl = `/get_audio/${audioName}`;
-            audioSource.src = audioUrl;
-            audioPlayer.load();
-            audioPlayer.play();
-        });
+<script>
+    const audioSelect = document.getElementById('audio');
+    const playButton = document.getElementById('playAudio');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const audioSource = document.getElementById('audioSource');
 
-        function pauseButton(){
-            audioPlayer.pause();
-        }
+    playButton.addEventListener('click', () => {
+        const audioName = audioSelect.value;
+        const audioUrl = `/get_audio/${audioName}`;
+        audioSource.src = audioUrl;
+        audioPlayer.load();
+        audioPlayer.play();
+    });
 
-        function resumeButton(){
-            audioPlayer.play();
-        }
-    </script>
+    function pauseButton() {
+        audioPlayer.pause();
+    }
+
+    function resumeButton() {
+        audioPlayer.play();
+    }
+
+    // Fade in the form-container
+    window.onload = () => {
+        document.querySelector('.form-container').style.opacity = 1;
+    };
+</script>
+<a href="/logout" class="logout-link">Logout</a>
 </body>
 </html>

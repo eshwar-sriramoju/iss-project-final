@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+    <style>
+        /* CSS styles */
+        body {
+            background-image: url('https://media.istockphoto.com/id/1361198672/vector/violet-neon-laser-circles-technology-background.jpg?s=612x612&w=0&k=20&c=szR3XQNYW-L1eOHRPy_e2A-umePbCO2kgsOrkWduBSs=');
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        .container {
+            margin-top: 130px;
+            text-align: center;
+            border: 2px solid rgb(203, 99, 245);
+            background-color: rgb(203, 99, 245); /* semi-transparent white background */
+            padding: 20px;
+            border-radius: 10px;
+            opacity: 0; /* Initially hidden */
+            transform: translateY(-20px); /* Initial position */
+            transition: opacity 0.5s ease, transform 0.5s ease; /* Transition effect */
+        }
+
+        .container.show {
+            opacity: 1; /* Show when added show class */
+            transform: translateY(0); /* Move to original position */
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 30px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: purple;
+            color: #fff;
+            font-size: larger;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            color: purple;
+            background-color: white;
+            font-weight: bold;
+        }
+
+        .details-container {
+            margin-bottom: 20px;
+        }
+
+        .details {
+            display: none;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+
+        .logout-link {
+            position: absolute;
+            top: 5px;
+            right: 3px;
+            background-color: white;
+            color: purple;
+            text-decoration: none;
+            font-size: larger;
+            margin-left: 30px;
+            margin-right: 30px;
+            margin-top: 30px;
+            padding: 10px;
+            font-weight: bold;
+            border: 1px solid #1b0219;
+            border-radius: 15px;
+        }
+        .logout-link:hover {
+            background-color: rgb(203, 99, 245);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Welcome to the Dashboard</h1>
+    <div class="details-container">
+        <!-- Button to show/hide user details -->
+        <button onclick="toggleDetails()">Show Details</button>
+        <!-- Hidden details initially -->
+        <div class="details" id="details">
+            <!-- Details to be shown when button is clicked -->
+            {% if user_data %}
+            <p>Name: {{ user_data[0] }}</p>
+            <p>Email: {{ user_data[1] }}</p>
+            <!-- Add more details here if needed -->
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Button to navigate to uploadimages.html -->
+    <button onclick="goToUploadImages()">Go to Upload Images</button>
+
+    <!-- Logout link -->
+    
+</div>
+<a href="/logout" class="logout-link">Logout</a>
+
+<script>
+    // Function to toggle details
+    function toggleDetails() {
+        var detailsDiv = document.getElementById("details");
+        if (detailsDiv.style.display === "none") {
+            detailsDiv.style.display = "block";
+        } else {
+            detailsDiv.style.display = "none";
+        }
+    }
+
+    // Function to navigate to upload images
+    function goToUploadImages() {
+        window.location.href = "/gallery"; // Change the URL as needed
+    }
+
+    // When the page loads, add the 'show' class to container
+    window.onload = function() {
+        var container = document.querySelector('.container');
+        container.classList.add('show');
+    };
+</script>
+</body>
+</html>

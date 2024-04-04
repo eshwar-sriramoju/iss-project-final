@@ -6,8 +6,7 @@
     <title>Create Video</title>
     <style>
         body{
-            background-image: url('https://img.freepik.com/free-photo/studio-background-concept-abstract-empty-light-gradient-purple-studio-room-background-product_1258-54682.jpg?size=338&ext=jpg&ga=GA1.1.735520172.1710892800&semt=ais');
-            background-size: cover;
+            background-color: rgb(201, 28, 172);
             color:white;
         }
         .image-container {
@@ -19,13 +18,61 @@
             max-width: 200px;
             max-height: 200px;
         }
+        .logout-link {
+            position: absolute;
+            top: 5px;
+            right: 3px;
+            background-color: white;
+            color: purple;
+            text-decoration: none;
+            font-size: larger;
+            margin-left: 30px;
+            margin-right: 30px;
+            margin-top: 30px;
+            padding: 10px;
+            font-weight: bold;
+            border: 1px solid #1b0219;
+            border-radius: 15px;
+        }
+        .logout-link:hover {
+            background-color: rgb(203, 99, 245);
+            color: white;
+        }
     </style>
 </head>
 <body>
-    <video controls>
+    <video controls style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50%; height: auto;">
         <source src="static/mix.mp4" type="video/mp4">
         Your browser does not support HTML video.
-      </video>
-    
+    </video>
+
+    <a href="/logout" class="logout-link">Logout</a>
+
+    <script>
+        // Calculate the middle color of the gradient
+        var color1 = "#800080"; // Start color
+        var color2 = "#ff00ff"; // End color
+        var middleColor = calculateMiddleColor(color1, color2);
+
+        // Set the background gradient to use the calculated middle color
+        document.body.style.background = "linear-gradient(to bottom, " + color1 + ", " + middleColor + ", " + color2 + ")";
+
+        // Function to calculate the middle color
+        function calculateMiddleColor(color1, color2) {
+            var r1 = parseInt(color1.substr(1, 2), 16);
+            var g1 = parseInt(color1.substr(3, 2), 16);
+            var b1 = parseInt(color1.substr(5, 2), 16);
+
+            var r2 = parseInt(color2.substr(1, 2), 16);
+            var g2 = parseInt(color2.substr(3, 2), 16);
+            var b2 = parseInt(color2.substr(5, 2), 16);
+
+            var r = Math.round((r1 + r2) / 2);
+            var g = Math.round((g1 + g2) / 2);
+            var b = Math.round((b1 + b2) / 2);
+
+            return '#' + r.toString(16) + g.toString(16) + b.toString(16);
+        }
+    </script>
 </body>
 </html>
