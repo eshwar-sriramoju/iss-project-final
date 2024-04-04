@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, session, url_for, send_from_directory, Response, jsonify
-import mysql.connector
 import io
 import base64
 import hashlib
@@ -9,7 +8,6 @@ import os
 from moviepy.editor import *
 import jwt
 from datetime import timedelta, timezone, datetime
-from functools import wraps
 
 app = Flask(__name__)
 SECRET_KEY = 'thisisthesecretkey'
