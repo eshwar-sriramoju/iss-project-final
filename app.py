@@ -331,7 +331,7 @@ def create_video():
                 clips.append(clip)
                 i = i + 1
 
-            clips_resized = [clip.resize(resolution) for clip in clips]
+            clips_resized = [clip.resize(resolution, resample=Image.BICUBIC) for clip in clips]
 
             audio = AudioFileClip("bgm.mp3")
             print("audio saved")
